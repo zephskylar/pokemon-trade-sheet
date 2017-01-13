@@ -194,6 +194,7 @@ var Pokemon = function() {
     this.ivs = new StatAttributes();
     this.evs = new StatAttributes();
     this.hiddenPower = "";
+    this.moves = [];
     this.eggMoves = [];
     this.balls = [];
     this.language = "";
@@ -202,7 +203,7 @@ var Pokemon = function() {
         if (FEMALE_ONLY_POKEMON.indexOf(this.dexNo) > -1) {
             return "gender-ratio-1-0";
         } else if (POKEMON_WITH_A_GENDER_RATIO_OF_SEVEN_FEMALES_TO_ONE_MALE.indexOf(this.dexNo) > -1) {
-            return "gender-ratio-7-1";        
+            return "gender-ratio-7-1";
         } else if (POKEMON_WITH_A_GENDER_RATIO_OF_THREE_FEMALES_TO_ONE_MALE.indexOf(this.dexNo) > -1) {
             return "gender-ratio-3-1";
         } else if (POKEMON_WITH_A_GENDER_RATIO_OF_ONE_FEMALE_TO_THREE_MALES.indexOf(this.dexNo) > -1) {
@@ -213,7 +214,7 @@ var Pokemon = function() {
             return "gender-ratio-0-1";
         } else if (GENDERLESS_POKEMON.indexOf(this.dexNo) > -1) {
             return "gender-ratio-0-0";
-        }    
+        }
         return "gender-ratio-1-1";
     };
     this.generation = function() {
@@ -235,7 +236,7 @@ var Pokemon = function() {
             }
             return 2;
         }
-        return 1; 
+        return 1;
     };
     this.hasHiddenAbility = function() {
         if (this.form == "Alola Form") {
@@ -348,12 +349,12 @@ function getData(pokemon) {
         Object.keys(pokemon).forEach(function(i) {
             if (typeof pokemon[i] !== "function") {
                 if (typeof pokemon[i] === "object") {
-                    
+
                 } else {
                     data += " data-" + i + "=\"" + pokemon[i] + "\"";
                 }
             }
-            
+
         });
         data += " data-generation=\"" + pokemon.generation() + "\"";
     }
@@ -526,6 +527,12 @@ function displayPokemon(){
             pokemon.ivs.spd = getValue(this.gsx$spdiv) || "x";
             pokemon.ivs.spe = getValue(this.gsx$speiv) || "x";
             pokemon.hiddenPower = getValue(this.gsx$hiddenpower);
+            pokemon.moves = [
+                getValue(this.gsx$move1),
+                getValue(this.gsx$move2),
+                getValue(this.gsx$move3),
+                getValue(this.gsx$move4)
+                ].filter(function(e){return e;});
             pokemon.eggMoves = [
                 getValue(this.gsx$eggmove1),
                 getValue(this.gsx$eggmove2),
@@ -586,8 +593,17 @@ function displayPokemon(){
             if (this.gsx$_e8rn7) pokemon.balls.push("Cherish Ball");
             if (this.gsx$_ea67k) pokemon.balls.push("Dream Ball");
             if (this.gsx$_ebks1) pokemon.balls.push("Beast Ball");
-            
+
             var row = "<tr class=\"" + getTags(pokemon) + "\"" + getData(pokemon) + ">";
+            // Poké Balls
+            row += "<td class=\"poke-balls rows" + Math.ceil(pokemon.balls.length / 3) + "\">";
+            for (i = 0; i < pokemon.balls.length; i++) {
+                row += "<span title=\"" + pokemon.balls[i] + "\"";
+                row += " class=\"item-sprite " + pokemon.balls[i].toLowerCase().replace(' ', '-').replace('é', 'e');
+                row += " row" + Math.ceil((i + 1)/ 3) + "\">";
+                row += pokemon.balls[i] + "</span>";
+            }
+            row += "</td>";
             // Sprite
             row += "<td class=\"sprite\"><span class=\"menu-sprite " + getSpriteClass(pokemon) + "\" title=\"" + pokemon.name + "\">" + pokemon.dexNo + "</span></td>";
             // Name
@@ -655,17 +671,16 @@ function displayPokemon(){
                 row += "???";
             }
             row += "</td>";
-            // Egg Moves
-            row += "<td class=\"egg-moves\">" + pokemon.eggMoves.join(', ') + "</td>";       
-            // Poké Balls
-            row += "<td class=\"poke-balls rows" + Math.ceil(pokemon.balls.length / 3) + "\">";
-            for (i = 0; i < pokemon.balls.length; i++) {
-                row += "<span title=\"" + pokemon.balls[i] + "\"";
-                row += " class=\"item-sprite " + pokemon.balls[i].toLowerCase().replace(' ', '-').replace('é', 'e');
-                row += " row" + Math.ceil((i + 1)/ 3) + "\">";
-                row += pokemon.balls[i] + "</span>";
+            // Moves
+            for (i = 0; i < 4; i++) {
+                var move = pokemon.moves[i] != null ? pokemon.moves[i] : "";
+                row += "<td class=\"moves\">" + move + "</td>";
             }
-            row += "</td></tr>";
+            // Egg Moves
+            for (i = 0; i < pokemon.eggMoves.length; i++) {
+                var move = pokemon.eggMoves[i] != null ? pokemon.eggMoves[i] : "";
+                row += "<td class=\"egg-moves hidden\">" + move + "</td>";
+            }
             $("tbody").append(row);
         });
         $("#loader").fadeOut("slow");
@@ -729,8 +744,10 @@ function displayPokemon(){
                 statAttributes = $this.find(".evs").html();
                 $pokemonInfo.find(".evs").next().html(statAttributes);
                 // Egg Moves
-                var eggMoves = $this.find(".egg-moves").text().split(', ');
+                var eggMoves = [];
+                $this.find(".egg-moves").each(function() { eggMoves.push($(this).text()) });
                 if (eggMoves[0]) {
+                    $("#pokemon-info ul").before("<span class=\"egg-moves-heading\"><b>Egg Moves</b></span>");
                     for (i = 0; i < eggMoves.length; i++) {
                         $("#pokemon-info ul").append("<li>" + eggMoves[i]);
                     }
@@ -752,6 +769,7 @@ function displayPokemon(){
                 $("#pokemon-info .menu-sprite").remove();
                 $("#pokemon-info .item-sprite").remove();
                 $("#pokemon-info figure img").remove();
+                $("#pokemon-info .egg-moves-heading").remove();
                 $("#pokemon-info ul li").remove();
                 $("#pokemon-info .notes").remove();
                 $("#pokemon-info").removeClass("shiny");

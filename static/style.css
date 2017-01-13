@@ -7,7 +7,7 @@ b, i,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, figcaption, figure, 
+article, aside, canvas, details, figcaption, figure,
 footer, header, main, menu, nav, section, summary,
 time, mark, audio, video {
     margin:0;
@@ -29,13 +29,13 @@ body,a,a:hover,a:focus,caption{
     color:#333
 }
 article,aside,details,figcaption,figure,
-footer,header,hgroup,menu,nav,section { 
+footer,header,hgroup,menu,nav,section {
     display:block;
 }
 
 abbr[title] {
     border-bottom: none;
-	text-decoration: none;
+    text-decoration: none;
 }
 
 a {
@@ -180,7 +180,7 @@ nav ul li a {
     padding:0.5em 1em;
     border-radius:0.25em;
     line-height: 1.45;
-    width:7.5em
+    width: auto;
 }
 nav ul li a:hover {
     color:#f0f0f0;
@@ -326,7 +326,7 @@ td.rows4 .item-sprite.row3 { margin: 0; }
     background-repeat:no-repeat;
     background-origin:content-box;
     vertical-align:middle;
-    text-indent:-999em  
+    text-indent:-999em
 }
 .menu-sprite{
     background-image:url(menusprites.png);
@@ -1410,9 +1410,9 @@ span.hidden-power{
 .hidden-power.steel{background-position:-100px -90px}
 
 .item-sprite{
-	width:1.625em;height:1.625em;
-	margin: 0.375em 0.125em;
-	background-image:url(itemsprites.png)
+    width:1.625em;height:1.625em;
+    margin: 0.375em 0.125em;
+    background-image:url(itemsprites.png)
 }
 .item-sprite.master-ball{background-position:-26px 0}
 .item-sprite.ultra-ball{background-position:-52px 0}
@@ -1452,15 +1452,15 @@ span.hidden-power{
     .menu-sprite,.ivs, .hp, .atk, .def, .spa, .spd, .spe, .hidden-power {
         display: none
     }
-    
+
     table, #filters, .btn, .dropdown-menu {
         font-size: 0.875em;
     }
-    
+
     .sprite,.sprite.up {
         padding: 0;
     }
-    
+
 }
 
 @media screen and (max-width: 67.5em) {
@@ -1474,11 +1474,11 @@ span.hidden-power{
         color: #000;
         text-decoration: none;
     }
-    
+
     a[href^="mailto:"]:after {
         content: " (" attr(data-email) ")";
     }
-    
+
     [role="search"],
     [role="contentinfo"] {
         display: none;
@@ -1582,7 +1582,7 @@ body.shiny tbody tr {
     margin-left:-14em;
     margin-top:-10.1875em
 }
-#pokemon-info h1 {    
+#pokemon-info h1 {
     color: #333;
     font-size: 1em;
     line-height: 1.875;
@@ -1590,7 +1590,7 @@ body.shiny tbody tr {
     text-align: left
 }
 #pokemon-info h1 .menu-sprite {
-    vertical-align: middle;    
+    vertical-align: middle;
 }
 #pokemon-info h1 .level{
     font-weight:400;
